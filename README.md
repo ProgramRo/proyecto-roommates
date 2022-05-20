@@ -38,4 +38,4 @@ Rutas que debes crear en tu servidor:
     e. GET /roommates: Devuelve todos los roommates almacenados en el servidor (roommates.json).    
 
 Se debe considerar recalcular y actualizar las cuentas de los roommates luego de este proceso. (3 Puntos)    
-5. Devolver los códigos de estado HTTP correspondientes a cada situación. (1 Punto)
+    5. Devolver los códigos de estado HTTP correspondientes a cada situación. (1 Punto)
