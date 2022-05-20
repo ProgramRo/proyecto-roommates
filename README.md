@@ -12,5 +12,5 @@ Además deberás servir una API REST que permita hacer lo siguiente:
     ● Modificar la información correspondiente a un gasto.    
     ● Eliminar gastos del historial.    
     
-A continuación se muestra una imagen con la interfaz que deberás devolver en la ruta raíz
-del servidor:
+A continuación se muestra una imagen con la interfaz que deberás devolver en la ruta raíz del servidor:
+![image](https://user-images.githubusercontent.com/98556305/169445439-be509fca-31ec-48ce-9412-ce2bb1404e25.png)
