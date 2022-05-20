@@ -24,3 +24,4 @@ Rutas que debes crear en tu servidor:
     ● /gasto PUT: Edita los datos de un gasto.    
     ● /gasto DELETE: Elimina un gasto del historial.    
 
+### Requerimientos
