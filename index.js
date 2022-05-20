@@ -48,16 +48,23 @@ http.createServer((req, res) => {
             body = JSON.parse(payload)
         })
         req.on('end', () => {
-            const gasto = {
-                id: uuidv4().slice(30),
-                roommate: body.roommate,
-                descripcion: body.descripcion,
-                monto: body.monto,
+            try {
+                const gasto = {
+                    id: uuidv4().slice(30),
+                    roommate: body.roommate,
+                    descripcion: body.descripcion,
+                    monto: body.monto,
+                }
+                const gastosJSON = JSON.parse(fs.readFileSync('gastos.json', 'utf-8'))
+                gastosJSON.gastos.push(gasto)
+                fs.writeFileSync('gastos.json', JSON.stringify(gastosJSON))
+                res.statusCode = 201
+                res.end()
+            } catch (error) {
+                res.statusCode = 500
+                res.end()
+                console.log('Error al registrar el nuevo gasto', error)
             }
-            const gastosJSON = JSON.parse(fs.readFileSync('gastos.json', 'utf-8'))
-            gastosJSON.gastos.push(gasto)
-            fs.writeFileSync('gastos.json', JSON.stringify(gastosJSON))
-            res.end()
         })
     }
 
@@ -73,6 +80,7 @@ http.createServer((req, res) => {
             const { id } = url.parse(req.url, true).query
             const gastosActualizados = gastos.map((g) => {
                 if (id === g.id) {
+                    // En ...body, se captan los elementos por separado del 
                     return {id, ...body}
                 }
                 return g
@@ -80,11 +88,19 @@ http.createServer((req, res) => {
             const nuevosGastos = {
                 gastos: gastosActualizados,
             }
-            //console.log(gastosActualizados)
             fs.writeFileSync('gastos.json', JSON.stringify(nuevosGastos))
             res.end()
         })
     }
-    
+
+    // Ruta que elimina un gasto
+    if (req.url.startsWith("/gasto") && req.method === "DELETE") {
+        const { id } = url.parse(req.url, true).query
+        const gastosJSON = JSON.parse(fs.readFileSync('gastos.json', 'utf-8'))
+        const gastos = gastosJSON.gastos
+        gastosJSON.gastos = gastos.filter((b) => b.id !== id)
+        fs.writeFileSync("gastos.json", JSON.stringify(gastosJSON));
+        res.end();
+    }
 
 }).listen(3000, console.log('Server ON!'))
