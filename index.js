@@ -13,8 +13,15 @@ http.createServer((req, res) => {
 
     // Ruta para leer el archivo index.html
     if(req.url === '/' && req.method === 'GET') {
-        res.setHeader('Content-Type', 'text/html')
-        res.end(fs.readFileSync('index.html', 'utf-8'))
+        try {
+            res.setHeader('Content-Type', 'text/html')
+            res.statusCode = 200
+            res.end(fs.readFileSync('index.html', 'utf-8'))
+        } catch (error) {
+            res.statusCode = 500
+            res.end()
+            console.log('Error al acceder al servidor', error)
+        }
     }
 
     // Ruta que agrega roommates a roommates.json
@@ -31,14 +38,28 @@ http.createServer((req, res) => {
 
     // Ruta que muestra todos los roommates
     if(req.url.startsWith('/roommates') && req.method === 'GET') {
-        res.setHeader('Content-Type', 'application/json')
-        res.end(fs.readFileSync('roommates.json', 'utf-8'))
+        try {
+            res.setHeader('Content-Type', 'application/json')
+            res.statusCode = 200
+            res.end(fs.readFileSync('roommates.json', 'utf-8'))
+        } catch (error) {
+            res.statusCode = 500
+            res.end()
+            console.log('Error al mostrar los roommates', error)
+        }
     }
 
     // Ruta que muestra todos los gastos
     if(req.url.startsWith('/gastos') && req.method === 'GET') {
-        res.setHeader('Content-Type', 'application/json')
-        res.end(fs.readFileSync('gastos.json', 'utf-8'))
+        try {
+            res.setHeader('Content-Type', 'application/json')
+            res.statusCode = 200
+            res.end(fs.readFileSync('gastos.json', 'utf-8'))
+        } catch (error) {
+            res.statusCode = 500
+            res.end()
+            console.log('Error al mostrar los gastos', error)
+        }
     }
 
     // Ruta que agrega gastos a gastos.json
@@ -70,7 +91,8 @@ http.createServer((req, res) => {
 
     // Ruta que actualiza los gastos
     if(req.url.startsWith('/gasto') && req.method === 'PUT') {
-        let body
+        try {
+            let body
         req.on('data', (payload) => {
             body = JSON.parse(payload)
         })
@@ -89,18 +111,31 @@ http.createServer((req, res) => {
                 gastos: gastosActualizados,
             }
             fs.writeFileSync('gastos.json', JSON.stringify(nuevosGastos))
+            res.statusCode = 200
             res.end()
         })
+        } catch (error) {
+            res.statusCode = 500
+            res.end()
+            console.log('Error al actualizar los gastos', error)
+        }
     }
 
     // Ruta que elimina un gasto
     if (req.url.startsWith("/gasto") && req.method === "DELETE") {
-        const { id } = url.parse(req.url, true).query
-        const gastosJSON = JSON.parse(fs.readFileSync('gastos.json', 'utf-8'))
-        const gastos = gastosJSON.gastos
-        gastosJSON.gastos = gastos.filter((b) => b.id !== id)
-        fs.writeFileSync("gastos.json", JSON.stringify(gastosJSON));
-        res.end();
+        try {
+            const { id } = url.parse(req.url, true).query
+            const gastosJSON = JSON.parse(fs.readFileSync('gastos.json', 'utf-8'))
+            const gastos = gastosJSON.gastos
+            gastosJSON.gastos = gastos.filter((b) => b.id !== id)
+            fs.writeFileSync("gastos.json", JSON.stringify(gastosJSON))
+            res.statusCode = 200
+            res.end()
+        } catch (error) {
+            res.statusCode = 500
+            res.end()
+            console.log('Error al eliminar el gasto', error)
+        }
     }
 
 }).listen(3000, console.log('Server ON!'))
