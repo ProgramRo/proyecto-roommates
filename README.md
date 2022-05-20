@@ -37,5 +37,5 @@ Rutas que debes crear en tu servidor:
     d. DELETE /gasto: Recibe el id del gasto usando las Query Strings y la elimine del historial de gastos (gastos.json).    
     e. GET /roommates: Devuelve todos los roommates almacenados en el servidor (roommates.json).    
 
-Se debe considerar recalcular y actualizar las cuentas de los roommates luego de este proceso. (3 Puntos)    
-    5. Devolver los códigos de estado HTTP correspondientes a cada situación. (1 Punto)
+    Se debe considerar recalcular y actualizar las cuentas de los roommates luego de este proceso. (3 Puntos)
+5. Devolver los códigos de estado HTTP correspondientes a cada situación. (1 Punto)
